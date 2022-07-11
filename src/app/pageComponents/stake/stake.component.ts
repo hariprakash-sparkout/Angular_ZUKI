@@ -28,6 +28,7 @@ export class StakeComponent implements OnInit {
   public contractAddress: string = "0xF395f96913dCd9e3AEEbBb8d82eE47F5A3ACc4c8";
   public approveAddress: string = "0x2811dE52B41267D6FD126B4F8d0ac2248E1C9624";
   poolsOngoing: any = [];
+  tpoolsOngoing: any = [];
   poolsUpcoming: any = [];
   poolsClaim: any = [];
   poolsCompleted: any = [];
@@ -41,14 +42,14 @@ export class StakeComponent implements OnInit {
 
   async ngOnInit() {
     // this.web3Service.connect();
-    console.log(contractAbi);
+    // console.log(contractAbi);
 
     this.contract = await new web3.eth.Contract(abi, this.contractAddress);
-    console.log(this.contract);
+    // console.log(this.contract);
 
     await this.setPoolLength();
     await this.createPath();
-    const obs$ = await interval(1000);
+    const obs$ = await interval(2000);
     obs$.subscribe((d) => {
       this.transform(1, 1);
     });
@@ -56,7 +57,9 @@ export class StakeComponent implements OnInit {
   }
   async createPath(){
     for (let i = 0; i < this.poolLength; i++) {
-        this.countDown.countDown.push('')
+      var nm = 2
+       var count = this.countDown.push(nm)
+        // console.log(count)
     }
   }
   async calculateTime() {
@@ -73,7 +76,7 @@ export class StakeComponent implements OnInit {
       var stakedAmount = await this.contract.methods
         .getUserStakedTokenInPool(i)
         .call({ from: localStorage.getItem("connecttedAddress") });
-      console.log(stakedAmount);
+      // console.log(stakedAmount);
       const userInfo = await this.contract.methods
         .userInfo(i, localStorage.getItem("connecttedAddress"))
         .call({ from: localStorage.getItem("connecttedAddress") });
@@ -92,51 +95,27 @@ export class StakeComponent implements OnInit {
       let h = hours - days * 24;
       let m = mins - hours * 60;
       let s = secs - mins * 60;
-      console.log(d + ":" + h + ":" + m + ":" + s);
+      // console.log(d + ":" + h + ":" + m + ":" + s);
 
       var stakedAmount = await this.contract.methods
         .getUserStakedTokenInPool(i)
         .call({ from: localStorage.getItem("connecttedAddress") });
-      console.log(stakedAmount);
-
-      if (currentTime > poolInfo.endTime && currentTime > poolInfo.startTime) {
-        if (stakedAmount > 0 && userInfo.stakingEndTime < currentTime) {
-          this.countDown[i].countDown = "Please Claim The Reward";
-        } else if (stakedAmount == 0) {
-          this.countDown[i].countDown = "No reward to Claim";
-        } else {
-          this.countDown[i].countDown = d + ":" + h + ":" + m + ":" + s;
-        }
-
-        console.log("completed");
-      } else if (
-        currentTime < poolInfo.startTime &&
-        currentTime < poolInfo.endTime
-      ) {
-        console.log("upcoming");
-      } else if (
-        currentTime < poolInfo.endTime &&
-        currentTime > poolInfo.startTime
-      ) {
-        if (stakedAmount > 0 && userInfo.stakingEndTime < currentTime) {
-          this.countDown[i].countDown = "Please Claim The Reward";
-        } else if (stakedAmount == 0) {
-          this.countDown[i].countDown = "No tokens staked";
-        } else {
-          this.countDown[i].countDown = d + ":" + h + ":" + m + ":" + s;
-        }
-        poolInfo["poolsStatus"] = "ongoing";
-      }
-
-      if (stakedAmount > 0) {
-      }
-      if (userInfo.isStaking && userInfo.stakingEndTime < currentTime) {
-      }
+      // console.log(stakedAmount);
+        this.upDateCountDown(stakedAmount,userInfo,currentTime,i,d,h,m,s)
+    }
+  }
+  async upDateCountDown(stakedAmount,userInfo,currentTime,i,d,h,m,s){
+    if (stakedAmount > 0 && userInfo.stakingEndTime < currentTime) {
+      this.countDown[i] = "Please Claim The Reward";
+    } else if (stakedAmount == 0) {
+      this.countDown[i] = "Not Yet Staked";
+    } else {
+      this.countDown[i] = d + ":" + h + ":" + m + ":" + s;
     }
   }
   public async setPoolLength() {
     this.poolLength = await this.contract.methods.poolLength().call();
-    console.log(this.poolLength);
+    // console.log(this.poolLength);
     this.syncPool();
   }
   /**
@@ -148,7 +127,7 @@ export class StakeComponent implements OnInit {
     this.viewMode === "onGoing"
       ? (this.showLive = true)
       : (this.showLive = false);
-    console.log(this.showLive);
+    // console.log(this.showLive);
   }
 
   public async syncPool() {
@@ -160,8 +139,8 @@ export class StakeComponent implements OnInit {
       const userInfo = await this.contract.methods
         .userInfo(i, localStorage.getItem("connecttedAddress"))
         .call({ from: localStorage.getItem("connecttedAddress") });
-      console.log("userINfo", userInfo);
-      console.log("poolInfo", poolInfo);
+      // console.log("userINfo", userInfo);
+      // console.log("poolInfo", poolInfo);
       this.calaculation(poolInfo, userInfo, stakedInpoolInfo, i);
     }
   }
@@ -203,14 +182,14 @@ export class StakeComponent implements OnInit {
     poolInfo.stakedInPool = (await stakedInpoolInfo) / 10 ** 18;
     poolInfo.stakedPercentage =
       (await (poolInfo.stakedInPool / poolInfo.stakebleAmount)) * 100;
-    console.log(poolInfo.duration);
+    // console.log(poolInfo.duration);
     var currentTime = await Math.floor(Date.now() / 1000);
-    console.log(currentTime);
-    console.log(poolInfo.endTime);
+    // console.log(currentTime);
+    // console.log(poolInfo.endTime);
     var stakedAmount = await this.contract.methods
       .getUserStakedTokenInPool(_pid)
       .call({ from: localStorage.getItem("connecttedAddress") });
-    console.log(stakedAmount);
+    // console.log(stakedAmount);
     poolInfo.userStakedAmount = stakedAmount / 10 ** 18;
     let userStakeEndTime = new Date(userInfo.stakingEndTime * 1000);
     // poolInfo.countDown = 0
@@ -233,7 +212,7 @@ export class StakeComponent implements OnInit {
       this.poolsCompleted.push(poolInfo);
       poolInfo["poolsStatus"] = "completed";
 
-      console.log("completed");
+      // console.log("completed");
     } else if (
       currentTime < poolInfo.startTime &&
       currentTime < poolInfo.endTime
@@ -241,13 +220,13 @@ export class StakeComponent implements OnInit {
       this.poolsUpcoming.push(poolInfo);
       poolInfo["poolsStatus"] = "upcoming";
 
-      console.log("upcoming");
+      // console.log("upcoming");
     } else if (
       currentTime < poolInfo.endTime &&
       currentTime > poolInfo.startTime
     ) {
       this.poolsOngoing.push(poolInfo);
-      console.log("Ongoing");
+      // console.log("Ongoing");
       poolInfo["poolsStatus"] = "ongoing";
     }
 
@@ -265,18 +244,18 @@ export class StakeComponent implements OnInit {
       approveABI,
       this.approveAddress
     );
-    console.log(_pid);
+    // console.log(_pid);
     let approveToken = await this.approveContract.methods
       .approve(this.contractAddress, BigInt(this.depositToken * 10 ** 18))
       .send({ from: localStorage.getItem("connecttedAddress") })
       .then((receipt) => {
-        console.log(receipt);
+        // console.log(receipt);
       });
     let stakeToken = await this.contract.methods
       .stakeTokens(_pid, BigInt(this.depositToken * 10 ** 18))
       .send({ from: localStorage.getItem("connecttedAddress") })
       .then((receipt) => {
-        console.log(receipt);
+        // console.log(receipt);
       });
   }
 
@@ -285,7 +264,7 @@ export class StakeComponent implements OnInit {
       .withdrawAll(_pid)
       .send({ from: localStorage.getItem("connecttedAddress") })
       .then((receipt) => {
-        console.log(receipt);
+        // console.log(receipt);
       });
   }
   togglePoolInfo() {
