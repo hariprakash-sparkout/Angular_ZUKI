@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { StorageService } from '../../services/storage.service';
 import { ContractService } from '../../services/contract.service';
 import { Router } from '@angular/router';
+import { abi, approveABI } from "../../helpers/helper";
 
 // Connect Wallet
 import Web3 from 'web3';
@@ -23,6 +24,9 @@ export class NavbarComponent implements OnInit {
   connector: any;
   ethereum: any;
   account: any = {};
+  public approveAddress: string = "0x2811dE52B41267D6FD126B4F8d0ac2248E1C9624";
+  public approveContract: any;
+  userBalance:any=''
   
 
   constructor(
@@ -41,9 +45,23 @@ export class NavbarComponent implements OnInit {
         ? { address: '', network: '', chainId: '', provider: '' }
         : JSON.parse(this.storageService.getItem('account') || '{}');
         this.account.address="ConnectWallet"
-    // this.setAccount(this.account.address, this.account.chainId, this.account.provider);
+        this.openMetamask()
+    this.updateBalance()
   }
+  async updateBalance(){
+    this.approveContract =await new web3.eth.Contract(
+      approveABI,
+      this.approveAddress
+    );
 
+    let approveToken = await this.approveContract.methods
+      .balanceOf(localStorage.getItem("connecttedAddress"))
+      .call()
+      .then((receipt) => {
+        this.userBalance=receipt/10**18
+        console.log(receipt/10**18);
+      });
+  }
   // Meta mask connection
   openMetamask = async () => {
     this.ethereum = window['ethereum'];

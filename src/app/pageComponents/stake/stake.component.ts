@@ -46,7 +46,6 @@ export class StakeComponent implements OnInit {
 
     this.contract = await new web3.eth.Contract(abi, this.contractAddress);
     // console.log(this.contract);
-
     await this.setPoolLength();
     await this.createPath();
     const obs$ = await interval(2000);
