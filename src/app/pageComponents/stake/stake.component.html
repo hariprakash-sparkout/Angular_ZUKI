@@ -1,0 +1,974 @@
+<app-navbar></app-navbar>
+<header class="bg-gradient-to-r from-light-blue to-dark-blue">
+  <div class="container mx-auto py-12">
+    <div class="md:flex justify-between px-8 md:px-0">
+      <div class="stake__tabs--nav">
+        <div class="bg-light-blue inline-block rounded-full">
+          <ul class="stake__tabs flex list-none pl-0" role="tablist">
+            <li class="stake__tab--trigger cursor-pointer w-full block font--regular text-sm 2xl:text-small leading-tight uppercase  px-6 py-2 capitalize " role="presentation" [ngClass]="viewMode == 'onGoing' ? 'bg-dark-blue px-6 py-2 rounded-full text-light-blue capitalize':''"
+                rel="onGoing" (click)="onToggle('onGoing')">
+
+                Live
+            </li>
+            <li class="stake__tab--trigger cursor-pointer w-full block font--regular text-sm 2xl:text-small leading-tight uppercase  px-6 py-2 capitalize" role="presentation" [ngClass]="viewMode == 'completed' ? 'bg-dark-blue px-6 py-2 rounded-full text-light-blue capitalize':''"
+                rel="completed" (click)="onToggle('completed')">
+
+                Completed
+            </li>
+            <li class="stake__tab--trigger cursor-pointer w-full block font--regular text-sm 2xl:text-small leading-tight uppercase  px-6 py-2 capitalize" role="presentation" [ngClass]="viewMode == 'myDeal' ? 'bg-dark-blue px-6 py-2 rounded-full text-light-blue capitalize':''"
+            rel="myDeal" (click)="onToggle('myDeal')">
+
+            MyDeals
+        </li>
+        <li class="stake__tab--trigger cursor-pointer w-full block font--regular text-sm 2xl:text-small leading-tight uppercase  px-6 py-2 capitalize" role="presentation" [ngClass]="viewMode == 'claim' ? 'bg-dark-blue px-6 py-2 rounded-full text-light-blue capitalize':''"
+        rel="claim" (click)="onToggle('claim')">
+
+        Claim
+    </li>
+        </ul>
+        </div>
+      </div>
+      <div class="flex justify-between">
+        <div
+          class="flex items-center md:justify-center w-full my-4 md:my-0 md:mb-12"
+        >
+          <label for="toggleB" class="flex items-center cursor-pointer">
+            <!-- toggle -->
+            <div class="relative">
+              <!-- input -->
+              <input type="checkbox" id="toggleB" class="sr-only" />
+              <!-- line -->
+              <div class="block bg-light-blue w-12 h-6 rounded-full"></div>
+              <!-- dot -->
+              <div
+                class="bg-dark-blue absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition"
+              ></div>
+            </div>
+            <!-- label -->
+            <div
+              class="ml-3 text-grey font--regular text-xs md:text-sm 2xl:text-small"
+            >
+              My Staking Pools
+            </div>
+          </label>
+        </div>
+        <div class="my-4 md:my-0">
+          <input
+            type="text"
+            class="form-control block w-full px-4 py-2 text-xs md:text-sm 2xl:text-small font--regular text-gray-700 bg-light-blue bg-clip-padding rounded-full transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+            id="exampleFormControlInput1"
+            placeholder="Search pool names"
+          />
+        </div>
+      </div>
+    </div>
+
+    <div *ngFor="let onGoing of this.poolsOngoing let index = index">
+      <div
+        class="stake__tabs--content p-8 md:px-0 md:py-8"
+        [ngSwitch]="viewMode"
+        id="tabs-tabContent1"
+      >
+        <div
+          class="tab-pane fade show active"
+          *ngSwitchCase="'onGoing'"
+          id="tabs-home1"
+          role="tabpanel"
+          aria-labelledby="tabs-home-onGoing"
+        >
+          <div  class="grid grid-cols-12 gap-4">
+            <div class="col-span-12">
+              <div class="bg-light-blue overflow-x-auto rounded-xl">
+                <div
+                  class="grid grid-cols-12 gap-x-4 lg:gap-6 border-blue border-b"
+                >
+                  <div class="col-span-12 lg:col-span-8">
+                    <table
+                      class="w-full md:h-24 text-sm 2xl:text-small text-left"
+                    >
+                      <tbody>
+                        <tr class="rounded-xl">
+                          <th scope="row" class="px-4 md:px-6 py-2 md:py-4">
+                            <p
+                              class="font--semibold text-dark-blue text-base md:text-lg 2xl:text-medium"
+                            >
+                              Round - 
+                            </p>
+                            <p
+                              class="font--regular text-dark-blue text-xs md:text-sm 2xl:text-normal"
+                            ></p>
+                          </th>
+                          <td
+                            class="px-4 md:px-6 py-2 md:py-4 hidden md:table-cell"
+                          >
+                            <p
+                              class="font--regular text-dark-blue text-xs md:text-sm 2xl:text-lg"
+                            >
+                              Deposit Reward
+                            </p>
+                            <p
+                              class="font--semibold text-dark-blue text-sm md:text-base 2xl:text-normal"
+                            >
+                              {{ onGoing.depositRewardRate }} %
+                            </p>
+                          </td>
+                          <td
+                            class="px-4 md:px-6 py-2 md:py-4 hidden md:table-cell"
+                          >
+                            <p
+                              class="font--regular text-dark-blue text-xs md:text-sm 2xl:text-lg"
+                            >
+                              Deposited Amount
+                            </p>
+                            <p
+                              class="font--semibold text-dark-blue text-sm md:text-base 2xl:text-normal"
+                            >
+                              {{ onGoing.userStakedAmount }}
+                            </p>
+                          </td>
+                          <td
+                            class="px-4 md:px-6 py-2 md:py-4 hidden md:table-cell"
+                          >
+                            <p
+                              class="font--regular text-dark-blue text-xs md:text-sm 2xl:text-lg"
+                            >
+                              Claim Time Remaining
+                            </p>
+                            <p
+                              class="font--semibold text-dark-blue text-sm md:text-base 2xl:text-normal"
+                            >
+                            {{this.countDown[1]}}
+                            </p>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <div class="col-span-12 lg:col-span-4">
+                    <table
+                      class="w-full md:h-24 text-sm 2xl:text-small text-left"
+                    >
+                      <tbody>
+                        <tr class="rounded-xl">
+                          <td class="px-4 md:px-6 py-2 md:py-4">
+                            <p
+                              class="font--regular text-dark-blue text-xs md:text-sm 2xl:text-lg"
+                            >
+                              APR
+                            </p>
+                            <p
+                              class="font--semibold text-dark-blue text-sm md:text-base 2xl:text-normal"
+                            >
+                              {{ onGoing.rewardRate }} %
+                            </p>
+                          </td>
+                          <td class="px-4 md:px-6 py-2 md:py-4">
+                            <p
+                              class="font--regular text-dark-blue text-xs md:text-sm 2xl:text-lg flex items-center"
+                            >
+                              Lockup Period
+                              <img
+                                src="assets/images/question.svg"
+                                class="w-3 h-3 md:w-4 md:h-4 ml-2"
+                                alt=""
+                              />
+                            </p>
+                            <p
+                              class="font--semibold text-dark-blue text-sm md:text-base 2xl:text-normal"
+                            >
+                              {{ onGoing.lockPeriod }} 
+                            </p>
+                          </td>
+                          <td class="px-4 md:px-6 py-2 md:py-4">
+                            <button (click)="(activeIndex == index) ? activeIndex = -1 : activeIndex = index" >
+                              <img
+                                src="assets/images/down-arrow.svg"
+                                class="w-3 h-3 md:w-4 md:h-4"
+                                alt=""
+                              />
+                            </button>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  
+                  <div  *ngIf="activeIndex == index"
+                    class="col-span-12"
+                    [ngClass]="{ hidden: !showPoolInfo, block: showPoolInfo }"
+                  >
+                    <div 
+                      class="bg-sky-blue rounded-xl mx-4 md:mx-6 mb-6 p-4 md:p-6"
+                    >
+                      <div 
+                        class="grid grid-cols-12 items-center gap-4 lg:gap-12"
+                      >
+                        <div  class="col-span-12 lg:col-span-4">
+                          <div class="md:flex justify-between items-centerpb-2">
+                            <p
+                              class="font--regular text-dark-blue text-xs md:text-sm 2xl:text-lg"
+                            >
+                              Total Pool Amount
+                            </p>
+                            <p
+                              class="font--semibold text-dark-blue text-sm md:text-base 2xl:text-normal"
+                            >
+                              {{ onGoing.stakebleAmount }} EKTA
+                            </p>
+                          </div>
+                          <div
+                            class="flex justify-between items-center space-x-4"
+                          >
+                            <div
+                              class="w-full bg-progress-blue rounded-full h-2.5 dark:bg-gray-700"
+                            >
+                              <div
+                                class="bg-dark-blue h-2.5 rounded-full"
+                                [ngStyle]="{
+                                  width: onGoing.stakedPercentage + '%'
+                                }"
+                              ></div>
+                            </div>
+                            <p
+                              class="font--regular text-dark-blue text-xs md:text-sm 2xl:text-lg"
+                            >
+                              {{ onGoing.stakedPercentage }} %
+                            </p>
+                          </div>
+                        </div>
+                        <div class="col-span-12 lg:col-span-5">
+                          <div
+                            class="md:flex justify-around items-center gap-y-4"
+                          >
+                            <div>
+                              <p
+                                class="font--regular text-dark-blue text-xs md:text-sm 2xl:text-lg"
+                              >
+                                Pool Entry Start Date
+                              </p>
+                              <p
+                                class="font--semibold text-dark-blue text-sm md:text-base 2xl:text-normal"
+                              >
+                                {{ onGoing.readableStartTime }}
+                              </p>
+                            </div>
+                            <div>
+                              <p
+                                class="font--regular text-dark-blue text-xs md:text-sm 2xl:text-lg"
+                              >
+                                Pool Entry End Date
+                              </p>
+                              <p
+                                class="font--semibold text-dark-blue text-sm md:text-base 2xl:text-normal"
+                              >
+                                {{ onGoing.readableEndTime }}
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-span-12 lg:col-span-3">
+                          <button
+                            (click)="stakeToken(onGoing.poolId)"
+                            type="button"
+                            class="bg-transparent-blue px-6 py-2 md:float-right text-dark-blue font--semibold text-sm 2xl:text-base rounded-full"
+                          >
+                            Stake Token
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        
+      </div>
+      
+    </div>
+    <div *ngFor="let onGoing of this.poolsCompleted let index = index">
+      <div
+        class="stake__tabs--content p-8 md:px-0 md:py-8"
+        [ngSwitch]="viewMode"
+        id="tabs-tabContent2"
+      >
+        <div
+          class="tab-pane fade show active"
+          *ngSwitchCase="'completed'"
+          id="tabs-home2"
+          role="tabpane2"
+          aria-labelledby="tabs-home-completed"
+        >
+          <div  class="grid grid-cols-12 gap-4">
+            <div class="col-span-12">
+              <div class="bg-light-blue overflow-x-auto rounded-xl">
+                <div
+                  class="grid grid-cols-12 gap-x-4 lg:gap-6 border-blue border-b"
+                >
+                  <div class="col-span-12 lg:col-span-8">
+                    <table
+                      class="w-full md:h-24 text-sm 2xl:text-small text-left"
+                    >
+                      <tbody>
+                        <tr class="rounded-xl">
+                          <th scope="row" class="px-4 md:px-6 py-2 md:py-4">
+                            <p
+                              class="font--semibold text-dark-blue text-base md:text-lg 2xl:text-medium"
+                            >
+                              Round - {{ onGoing.Id }}
+                            </p>
+                            <p
+                              class="font--regular text-dark-blue text-xs md:text-sm 2xl:text-normal"
+                            ></p>
+                          </th>
+                          <td
+                            class="px-4 md:px-6 py-2 md:py-4 hidden md:table-cell"
+                          >
+                          <p
+                          class="font--regular text-dark-blue text-xs md:text-sm 2xl:text-lg"
+                        >
+                          Deposit Reward
+                        </p>
+                        <p
+                          class="font--semibold text-dark-blue text-sm md:text-base 2xl:text-normal"
+                        >
+                          {{ onGoing.depositRewardRate }} %
+                        </p>
+                          </td>
+                          <td
+                            class="px-4 md:px-6 py-2 md:py-4 hidden md:table-cell"
+                          >
+                            <p
+                              class="font--regular text-dark-blue text-xs md:text-sm 2xl:text-lg"
+                            >
+                              Deposit Amount
+                            </p>
+                            <p
+                              class="font--semibold text-dark-blue text-sm md:text-base 2xl:text-normal"
+                            >
+                              {{ depositToken }}
+                            </p>
+                          </td>
+                          <td
+                            class="px-4 md:px-6 py-2 md:py-4 hidden md:table-cell"
+                          >
+                            <p
+                              class="font--regular text-dark-blue text-xs md:text-sm 2xl:text-lg"
+                            >
+                              Expiry Date
+                            </p>
+                            <p
+                              class="font--semibold text-dark-blue text-sm md:text-base 2xl:text-normal"
+                            >
+                              {{onGoing.countDown}}
+                            </p>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <div class="col-span-12 lg:col-span-4">
+                    <table
+                      class="w-full md:h-24 text-sm 2xl:text-small text-left"
+                    >
+                      <tbody>
+                        <tr class="rounded-xl">
+                          <td class="px-4 md:px-6 py-2 md:py-4">
+                            <p
+                              class="font--regular text-dark-blue text-xs md:text-sm 2xl:text-lg"
+                            >
+                              APR
+                            </p>
+                            <p
+                              class="font--semibold text-dark-blue text-sm md:text-base 2xl:text-normal"
+                            >
+                              {{ onGoing.rewardRate }} %
+                            </p>
+                          </td>
+                          <td class="px-4 md:px-6 py-2 md:py-4">
+                            <p
+                              class="font--regular text-dark-blue text-xs md:text-sm 2xl:text-lg flex items-center"
+                            >
+                              Lockup Period
+                              <img
+                                src="assets/images/question.svg"
+                                class="w-3 h-3 md:w-4 md:h-4 ml-2"
+                                alt=""
+                              />
+                            </p>
+                            <p
+                              class="font--semibold text-dark-blue text-sm md:text-base 2xl:text-normal"
+                            >
+                              {{ onGoing.lockPeriod }} 
+                            </p>
+                          </td>
+                          <td class="px-4 md:px-6 py-2 md:py-4">
+                            <button (click)="(activeIndex == index) ? activeIndex = -1 : activeIndex = index" >
+                              <img
+                                src="assets/images/down-arrow.svg"
+                                class="w-3 h-3 md:w-4 md:h-4"
+                                alt=""
+                              />
+                            </button>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  
+                  <div  *ngIf="activeIndex == index"
+                    class="col-span-12"
+                    [ngClass]="{ hidden: !showPoolInfo, block: showPoolInfo }"
+                  >
+                    <div 
+                      class="bg-sky-blue rounded-xl mx-4 md:mx-6 mb-6 p-4 md:p-6"
+                    >
+                      <div 
+                        class="grid grid-cols-12 items-center gap-4 lg:gap-12"
+                      >
+                        <div  class="col-span-12 lg:col-span-4">
+                          <div class="md:flex justify-between items-centerpb-2">
+                            <p
+                              class="font--regular text-dark-blue text-xs md:text-sm 2xl:text-lg"
+                            >
+                              Total Pool Amount
+                            </p>
+                            <p
+                              class="font--semibold text-dark-blue text-sm md:text-base 2xl:text-normal"
+                            >
+                              {{ onGoing.stakebleAmount }} EKTA
+                            </p>
+                          </div>
+                          <div
+                            class="flex justify-between items-center space-x-4"
+                          >
+                            <div
+                              class="w-full bg-progress-blue rounded-full h-2.5 dark:bg-gray-700"
+                            >
+                              <div
+                                class="bg-dark-blue h-2.5 rounded-full"
+                                [ngStyle]="{
+                                  width: onGoing.stakedPercentage + '%'
+                                }"
+                              ></div>
+                            </div>
+                            <p
+                              class="font--regular text-dark-blue text-xs md:text-sm 2xl:text-lg"
+                            >
+                              {{ onGoing.stakedPercentage }} %
+                            </p>
+                          </div>
+                        </div>
+                        <div class="col-span-12 lg:col-span-5">
+                          <div
+                            class="md:flex justify-around items-center gap-y-4"
+                          >
+                            <div>
+                              <p
+                                class="font--regular text-dark-blue text-xs md:text-sm 2xl:text-lg"
+                              >
+                                Pool Entry Start Date
+                              </p>
+                              <p
+                                class="font--semibold text-dark-blue text-sm md:text-base 2xl:text-normal"
+                              >
+                                {{ onGoing.readableStartTime }}
+                              </p>
+                            </div>
+                            <div>
+                              <p
+                                class="font--regular text-dark-blue text-xs md:text-sm 2xl:text-lg"
+                              >
+                                Pool Entry End Date
+                              </p>
+                              <p
+                                class="font--semibold text-dark-blue text-sm md:text-base 2xl:text-normal"
+                              >
+                                {{ onGoing.readableEndTime }}
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-span-12 lg:col-span-3">
+                          <!-- <button
+                            (click)="stakeToken(index)"
+                            type="button"
+                            class="bg-transparent-blue px-6 py-2 md:float-right text-dark-blue font--semibold text-sm 2xl:text-base rounded-full"
+                          >
+                          {{onGoing.countDown}}
+                          </button> -->
+                          
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        
+      </div>
+      
+    </div>
+    <div *ngFor="let onGoing of this.poolsMyDeal let index = index">
+      <div
+        class="stake__tabs--content p-8 md:px-0 md:py-8"
+        [ngSwitch]="viewMode"
+        id="tabs-tabContent2"
+      >
+        <div
+          class="tab-pane fade show active"
+          *ngSwitchCase="'myDeal'"
+          id="tabs-home3"
+          role="tabpane3"
+          aria-labelledby="tabs-home-myDeal"
+        >
+          <div  class="grid grid-cols-12 gap-4">
+            <div class="col-span-12">
+              <div class="bg-light-blue overflow-x-auto rounded-xl">
+                <div
+                  class="grid grid-cols-12 gap-x-4 lg:gap-6 border-blue border-b"
+                >
+                  <div class="col-span-12 lg:col-span-8">
+                    <table
+                      class="w-full md:h-24 text-sm 2xl:text-small text-left"
+                    >
+                      <tbody>
+                        <tr class="rounded-xl">
+                          <th scope="row" class="px-4 md:px-6 py-2 md:py-4">
+                            <p
+                              class="font--semibold text-dark-blue text-base md:text-lg 2xl:text-medium"
+                            >
+                              Round - {{ onGoing.Id }}
+                            </p>
+                            <p
+                              class="font--regular text-dark-blue text-xs md:text-sm 2xl:text-normal"
+                            ></p>
+                          </th>
+                          <td
+                            class="px-4 md:px-6 py-2 md:py-4 hidden md:table-cell"
+                          >
+                          <p
+                          class="font--regular text-dark-blue text-xs md:text-sm 2xl:text-lg"
+                        >
+                          Deposit Reward
+                        </p>
+                        <p
+                          class="font--semibold text-dark-blue text-sm md:text-base 2xl:text-normal"
+                        >
+                          {{ onGoing.depositRewardRate }} %
+                        </p>
+                          </td>
+                          <td
+                            class="px-4 md:px-6 py-2 md:py-4 hidden md:table-cell"
+                          >
+                            <p
+                              class="font--regular text-dark-blue text-xs md:text-sm 2xl:text-lg"
+                            >
+                              Expected Reward
+                            </p>
+                            <p
+                              class="font--semibold text-dark-blue text-sm md:text-base 2xl:text-normal"
+                            >
+                              {{ onGoing.userExpectedReward }}
+                            </p>
+                          </td>
+                          <td
+                            class="px-4 md:px-6 py-2 md:py-4 hidden md:table-cell"
+                          >
+                            <p
+                              class="font--regular text-dark-blue text-xs md:text-sm 2xl:text-lg"
+                            >
+                             Claim Date
+                            </p>
+                            <p
+                              class="font--semibold text-dark-blue text-sm md:text-base 2xl:text-normal"
+                            >
+                            {{onGoing.countDown}}
+                            </p>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <div class="col-span-12 lg:col-span-4">
+                    <table
+                      class="w-full md:h-24 text-sm 2xl:text-small text-left"
+                    >
+                      <tbody>
+                        <tr class="rounded-xl">
+                          <td class="px-4 md:px-6 py-2 md:py-4">
+                            <p
+                              class="font--regular text-dark-blue text-xs md:text-sm 2xl:text-lg"
+                            >
+                              APR
+                            </p>
+                            <p
+                              class="font--semibold text-dark-blue text-sm md:text-base 2xl:text-normal"
+                            >
+                              {{ onGoing.rewardRate }} %
+                            </p>
+                          </td>
+                          <td class="px-4 md:px-6 py-2 md:py-4">
+                            <p
+                              class="font--regular text-dark-blue text-xs md:text-sm 2xl:text-lg flex items-center"
+                            >
+                              Lockup Period
+                              <img
+                                src="assets/images/question.svg"
+                                class="w-3 h-3 md:w-4 md:h-4 ml-2"
+                                alt=""
+                              />
+                            </p>
+                            <p
+                              class="font--semibold text-dark-blue text-sm md:text-base 2xl:text-normal"
+                            >
+                              {{ onGoing.lockPeriod }} 
+                            </p>
+                          </td>
+                          <td class="px-4 md:px-6 py-2 md:py-4">
+                            <button (click)="(activeIndex == index) ? activeIndex = -1 : activeIndex = index" >
+                              <img
+                                src="assets/images/down-arrow.svg"
+                                class="w-3 h-3 md:w-4 md:h-4"
+                                alt=""
+                              />
+                            </button>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  
+                  <div  *ngIf="activeIndex == index"
+                    class="col-span-12"
+                    [ngClass]="{ hidden: !showPoolInfo, block: showPoolInfo }"
+                  >
+                    <div 
+                      class="bg-sky-blue rounded-xl mx-4 md:mx-6 mb-6 p-4 md:p-6"
+                    >
+                      <div 
+                        class="grid grid-cols-12 items-center gap-4 lg:gap-12"
+                      >
+                        <div  class="col-span-12 lg:col-span-4">
+                          <div class="md:flex justify-between items-centerpb-2">
+                            <p
+                              class="font--regular text-dark-blue text-xs md:text-sm 2xl:text-lg"
+                            >
+                              Total Pool Amount
+                            </p>
+                            <p
+                              class="font--semibold text-dark-blue text-sm md:text-base 2xl:text-normal"
+                            >
+                              {{ onGoing.stakebleAmount }} EKTA
+                            </p>
+                          </div>
+                          <div
+                            class="flex justify-between items-center space-x-4"
+                          >
+                            <div
+                              class="w-full bg-progress-blue rounded-full h-2.5 dark:bg-gray-700"
+                            >
+                              <div
+                                class="bg-dark-blue h-2.5 rounded-full"
+                                [ngStyle]="{
+                                  width: onGoing.stakedPercentage + '%'
+                                }"
+                              ></div>
+                            </div>
+                            <p
+                              class="font--regular text-dark-blue text-xs md:text-sm 2xl:text-lg"
+                            >
+                              {{ onGoing.stakedPercentage }} %
+                            </p>
+                          </div>
+                        </div>
+                        <div class="col-span-12 lg:col-span-5">
+                          <div
+                            class="md:flex justify-around items-center gap-y-4"
+                          >
+                            <div>
+                              <p
+                                class="font--regular text-dark-blue text-xs md:text-sm 2xl:text-lg"
+                              >
+                                Pool Entry Start Date
+                              </p>
+                              <p
+                                class="font--semibold text-dark-blue text-sm md:text-base 2xl:text-normal"
+                              >
+                                {{ onGoing.readableStartTime }}
+                              </p>
+                            </div>
+                            <div>
+                              <p
+                                class="font--regular text-dark-blue text-xs md:text-sm 2xl:text-lg"
+                              >
+                                Pool Entry End Date
+                              </p>
+                              <p
+                                class="font--semibold text-dark-blue text-sm md:text-base 2xl:text-normal"
+                              >
+                                {{ onGoing.readableEndTime }}
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-span-12 lg:col-span-3">
+                          <!-- <button
+                            (click)="ClaimToken(onGoing.Id-1)"
+                            type="button"
+                            class="bg-transparent-blue px-6 py-2 md:float-right text-dark-blue font--semibold text-sm 2xl:text-base rounded-full"
+                          >
+                            Claim Token
+                          </button> -->
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        
+      </div>
+      
+    </div>
+    <div *ngFor="let onGoing of this.poolsClaim let index = index">
+      <div
+        class="stake__tabs--content p-8 md:px-0 md:py-8"
+        [ngSwitch]="viewMode"
+        id="tabs-tabContent2"
+      >
+        <div
+          class="tab-pane fade show active"
+          *ngSwitchCase="'claim'"
+          id="tabs-home3"
+          role="tabpane3"
+          aria-labelledby="tabs-home-claim"
+        >
+          <div  class="grid grid-cols-12 gap-4">
+            <div class="col-span-12">
+              <div class="bg-light-blue overflow-x-auto rounded-xl">
+                <div
+                  class="grid grid-cols-12 gap-x-4 lg:gap-6 border-blue border-b"
+                >
+                  <div class="col-span-12 lg:col-span-8">
+                    <table
+                      class="w-full md:h-24 text-sm 2xl:text-small text-left"
+                    >
+                      <tbody>
+                        <tr class="rounded-xl">
+                          <th scope="row" class="px-4 md:px-6 py-2 md:py-4">
+                            <p
+                              class="font--semibold text-dark-blue text-base md:text-lg 2xl:text-medium"
+                            >
+                              Round - {{ onGoing.Id }}
+                            </p>
+                            <p
+                              class="font--regular text-dark-blue text-xs md:text-sm 2xl:text-normal"
+                            ></p>
+                          </th>
+                          <td
+                            class="px-4 md:px-6 py-2 md:py-4 hidden md:table-cell"
+                          >
+                          <p
+                          class="font--regular text-dark-blue text-xs md:text-sm 2xl:text-lg"
+                        >
+                          Deposit Reward
+                        </p>
+                        <p
+                          class="font--semibold text-dark-blue text-sm md:text-base 2xl:text-normal"
+                        >
+                          {{ onGoing.depositRewardRate }} %
+                        </p>
+                          </td>
+                          <td
+                            class="px-4 md:px-6 py-2 md:py-4 hidden md:table-cell"
+                          >
+                            <p
+                              class="font--regular text-dark-blue text-xs md:text-sm 2xl:text-lg"
+                            >
+                              Expected Reward
+                            </p>
+                            <p
+                              class="font--semibold text-dark-blue text-sm md:text-base 2xl:text-normal"
+                            >
+                              {{ onGoing.userExpectedReward }}
+                            </p>
+                          </td>
+                          <td
+                            class="px-4 md:px-6 py-2 md:py-4 hidden md:table-cell"
+                          >
+                            <p
+                              class="font--regular text-dark-blue text-xs md:text-sm 2xl:text-lg"
+                            >
+                             Claim Date
+                            </p>
+                            <p
+                              class="font--semibold text-dark-blue text-sm md:text-base 2xl:text-normal"
+                            >
+                            Please Claim YOur Reward
+                            </p>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <div class="col-span-12 lg:col-span-4">
+                    <table
+                      class="w-full md:h-24 text-sm 2xl:text-small text-left"
+                    >
+                      <tbody>
+                        <tr class="rounded-xl">
+                          <td class="px-4 md:px-6 py-2 md:py-4">
+                            <p
+                              class="font--regular text-dark-blue text-xs md:text-sm 2xl:text-lg"
+                            >
+                              APR
+                            </p>
+                            <p
+                              class="font--semibold text-dark-blue text-sm md:text-base 2xl:text-normal"
+                            >
+                              {{ onGoing.rewardRate }} %
+                            </p>
+                          </td>
+                          <td class="px-4 md:px-6 py-2 md:py-4">
+                            <p
+                              class="font--regular text-dark-blue text-xs md:text-sm 2xl:text-lg flex items-center"
+                            >
+                              Lockup Period
+                              <img
+                                src="assets/images/question.svg"
+                                class="w-3 h-3 md:w-4 md:h-4 ml-2"
+                                alt=""
+                              />
+                            </p>
+                            <p
+                              class="font--semibold text-dark-blue text-sm md:text-base 2xl:text-normal"
+                            >
+                              {{ onGoing.lockPeriod }} 
+                            </p>
+                          </td>
+                          <td class="px-4 md:px-6 py-2 md:py-4">
+                            <button (click)="(activeIndex == index) ? activeIndex = -1 : activeIndex = index" >
+                              <img
+                                src="assets/images/down-arrow.svg"
+                                class="w-3 h-3 md:w-4 md:h-4"
+                                alt=""
+                              />
+                            </button>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  
+                  <div  *ngIf="activeIndex == index"
+                    class="col-span-12"
+                    [ngClass]="{ hidden: !showPoolInfo, block: showPoolInfo }"
+                  >
+                    <div 
+                      class="bg-sky-blue rounded-xl mx-4 md:mx-6 mb-6 p-4 md:p-6"
+                    >
+                      <div 
+                        class="grid grid-cols-12 items-center gap-4 lg:gap-12"
+                      >
+                        <div  class="col-span-12 lg:col-span-4">
+                          <div class="md:flex justify-between items-centerpb-2">
+                            <p
+                              class="font--regular text-dark-blue text-xs md:text-sm 2xl:text-lg"
+                            >
+                              Total Pool Amount
+                            </p>
+                            <p
+                              class="font--semibold text-dark-blue text-sm md:text-base 2xl:text-normal"
+                            >
+                              {{ onGoing.stakebleAmount }} EKTA
+                            </p>
+                          </div>
+                          <div
+                            class="flex justify-between items-center space-x-4"
+                          >
+                            <div
+                              class="w-full bg-progress-blue rounded-full h-2.5 dark:bg-gray-700"
+                            >
+                              <div
+                                class="bg-dark-blue h-2.5 rounded-full"
+                                [ngStyle]="{
+                                  width: onGoing.stakedPercentage + '%'
+                                }"
+                              ></div>
+                            </div>
+                            <p
+                              class="font--regular text-dark-blue text-xs md:text-sm 2xl:text-lg"
+                            >
+                              {{ onGoing.stakedPercentage }} %
+                            </p>
+                          </div>
+                        </div>
+                        <div class="col-span-12 lg:col-span-5">
+                          <div
+                            class="md:flex justify-around items-center gap-y-4"
+                          >
+                            <div>
+                              <p
+                                class="font--regular text-dark-blue text-xs md:text-sm 2xl:text-lg"
+                              >
+                                Pool Entry Start Date
+                              </p>
+                              <p
+                                class="font--semibold text-dark-blue text-sm md:text-base 2xl:text-normal"
+                              >
+                                {{ onGoing.readableStartTime }}
+                              </p>
+                            </div>
+                            <div>
+                              <p
+                                class="font--regular text-dark-blue text-xs md:text-sm 2xl:text-lg"
+                              >
+                                Pool Entry End Date
+                              </p>
+                              <p
+                                class="font--semibold text-dark-blue text-sm md:text-base 2xl:text-normal"
+                              >
+                                {{ onGoing.readableEndTime }}
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-span-12 lg:col-span-3">
+                          <button
+                            (click)="ClaimToken(index)"
+                            type="button"
+                            class="bg-transparent-blue px-6 py-2 md:float-right text-dark-blue font--semibold text-sm 2xl:text-base rounded-full"
+                          >
+                            Claim Token
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        
+      </div>
+      
+    </div>
+    
+    
+
+    
+  </div>
+  
+  <!-- Upload END -->
+</header>
